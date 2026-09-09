@@ -1,0 +1,126 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-stamp-paper: var(--stamp-paper);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Warm cream paper palette */
+  --background: oklch(0.958 0.014 83);
+  --foreground: oklch(0.27 0.022 55);
+
+  --card: oklch(0.98 0.01 86);
+  --card-foreground: oklch(0.27 0.022 55);
+  --popover: oklch(0.98 0.01 86);
+  --popover-foreground: oklch(0.27 0.022 55);
+
+  /* Deep passport ink green */
+  --primary: oklch(0.4 0.045 168);
+  --primary-foreground: oklch(0.97 0.014 84);
+
+  --secondary: oklch(0.91 0.016 80);
+  --secondary-foreground: oklch(0.32 0.025 58);
+
+  --muted: oklch(0.925 0.013 82);
+  --muted-foreground: oklch(0.52 0.022 62);
+
+  /* Postage red / terracotta accent */
+  --accent: oklch(0.56 0.15 33);
+  --accent-foreground: oklch(0.97 0.014 84);
+
+  --gold: oklch(0.72 0.09 78);
+  --stamp-paper: oklch(0.975 0.012 86);
+
+  --destructive: oklch(0.55 0.2 27);
+  --border: oklch(0.86 0.016 78);
+  --input: oklch(0.86 0.016 78);
+  --ring: oklch(0.56 0.15 33);
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/40;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+  }
+}
+
+@layer utilities {
+  /* Subtle vintage paper grain */
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  }
+
+  /* Postage stamp perforated edge */
+  .stamp-perf {
+    --perf-r: 4px;
+    --perf-s: 12px;
+    padding: calc(var(--perf-r) + 3px);
+    background: var(--stamp-paper);
+    -webkit-mask:
+      radial-gradient(var(--perf-r) at var(--perf-r) var(--perf-r), #0000 99%, #000)
+        calc(-1 * var(--perf-r)) calc(-1 * var(--perf-r)),
+      repeating-conic-gradient(from 90deg at var(--perf-r) var(--perf-r), #0000 25%, #000 0)
+        calc(-1 * var(--perf-r)) 0 / calc(2 * var(--perf-s)) 100%,
+      repeating-conic-gradient(from 90deg at var(--perf-r) var(--perf-r), #0000 25%, #000 0)
+        0 calc(-1 * var(--perf-r)) / 100% calc(2 * var(--perf-s));
+    mask:
+      radial-gradient(var(--perf-r) at var(--perf-r) var(--perf-r), #0000 99%, #000)
+        calc(-1 * var(--perf-r)) calc(-1 * var(--perf-r)),
+      repeating-conic-gradient(from 90deg at var(--perf-r) var(--perf-r), #0000 25%, #000 0)
+        calc(-1 * var(--perf-r)) 0 / calc(2 * var(--perf-s)) 100%,
+      repeating-conic-gradient(from 90deg at var(--perf-r) var(--perf-r), #0000 25%, #000 0)
+        0 calc(-1 * var(--perf-r)) / 100% calc(2 * var(--perf-s));
+  }
+
+  .stamp-perf-lg {
+    --perf-r: 6px;
+    --perf-s: 16px;
+  }
+
+  /* Ink-stamp postmark ring */
+  .postmark {
+    border: 2.5px solid var(--accent);
+    color: var(--accent);
+    opacity: 0.75;
+    mix-blend-mode: multiply;
+  }
+}
