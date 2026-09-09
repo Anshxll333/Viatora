@@ -1,7 +1,21 @@
 'use server'
 
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+
+async function getOrigin() {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
+  }
+  if (process.env.RENDER_EXTERNAL_URL) {
+    return process.env.RENDER_EXTERNAL_URL.replace(/\/$/, '')
+  }
+  const headerList = await headers()
+  const host = headerList.get('x-forwarded-host') || headerList.get('host') || 'localhost:3000'
+  const proto = headerList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https')
+  return `${proto}://${host}`
+}
 
 export async function login(prevState: any, formData: FormData): Promise<{ error?: string; message?: string } | undefined> {
   const email = formData.get('email') as string
@@ -38,12 +52,13 @@ export async function signup(prevState: any, formData: FormData): Promise<{ erro
   const username = rawUsername.trim() || email.split('@')[0]
   const supabase = await createClient()
 
-  // Profile username has a unique database constraint. Let it resolve concurrent signups.
-  // No service-role key needed in this server action.
+  const origin = await getOrigin()
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
+      emailRedirectTo: `${origin}/auth/callback`,
       data: {
         full_name: fullName || email.split('@')[0],
         username,

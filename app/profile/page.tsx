@@ -102,24 +102,24 @@ export default async function ProfilePage() {
         </section>
       ) : (
         /* AUTHENTICATED USER STATE */
-        <section className="px-5 pt-2 space-y-6">
+        <section className="px-5 pt-2 space-y-5">
           {/* Traveler Card */}
-          <div className="rounded-2xl border border-border/80 bg-card/80 p-6 shadow-[0_8px_30px_rgba(60,40,20,0.08)]">
-            <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent ring-2 ring-accent/30 font-serif text-2xl font-semibold">
+          <div className="rounded-2xl border border-border/80 bg-card/80 p-4 sm:p-6 shadow-[0_8px_30px_rgba(60,40,20,0.08)] w-full overflow-hidden">
+            <div className="flex items-center gap-3 sm:gap-4 w-full">
+              <div className="flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent ring-2 ring-accent/30 font-serif text-xl sm:text-2xl font-semibold">
                 {profile?.full_name?.charAt(0) || user.email?.charAt(0).toUpperCase() || 'T'}
               </div>
 
-              <div className="min-w-0 flex-1">
-                <h2 className="truncate font-serif text-2xl text-foreground">
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <h2 className="truncate font-serif text-xl sm:text-2xl text-foreground">
                   {profile?.full_name || 'Traveler'}
                 </h2>
                 {profile?.username && (
-                  <p className="font-mono text-[11px] text-accent">
+                  <p className="truncate font-mono text-[11px] text-accent">
                     @{profile.username}
                   </p>
                 )}
-                <p className="mt-1 flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+                <p className="mt-1 flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-muted-foreground">
                   <Mail className="h-3 w-3 shrink-0" />
                   <span className="truncate">{user.email}</span>
                 </p>
@@ -127,25 +127,25 @@ export default async function ProfilePage() {
             </div>
 
             {/* Travel Stats Grid */}
-            <div className="mt-6 grid grid-cols-3 gap-3 border-t border-dashed border-border/80 pt-5">
-              <div className="rounded-xl border border-border/60 bg-background/50 p-3 text-center">
+            <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3 border-t border-dashed border-border/80 pt-4">
+              <div className="rounded-xl border border-border/60 bg-background/50 p-2 sm:p-3 text-center min-w-0">
                 <StampIcon className="mx-auto h-4 w-4 text-accent" />
-                <p className="mt-1 font-serif text-xl text-foreground">{collectedCount}</p>
-                <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                <p className="mt-1 font-serif text-lg sm:text-xl text-foreground">{collectedCount}</p>
+                <p className="truncate font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                   Stamps
                 </p>
               </div>
-              <div className="rounded-xl border border-border/60 bg-background/50 p-3 text-center">
+              <div className="rounded-xl border border-border/60 bg-background/50 p-2 sm:p-3 text-center min-w-0">
                 <MapPin className="mx-auto h-4 w-4 text-accent" />
-                <p className="mt-1 font-serif text-xl text-foreground">{statesVisitedCount}</p>
-                <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                <p className="mt-1 font-serif text-lg sm:text-xl text-foreground">{statesVisitedCount}</p>
+                <p className="truncate font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                   States
                 </p>
               </div>
-              <div className="rounded-xl border border-border/60 bg-background/50 p-3 text-center">
+              <div className="rounded-xl border border-border/60 bg-background/50 p-2 sm:p-3 text-center min-w-0">
                 <Bookmark className="mx-auto h-4 w-4 text-accent" />
-                <p className="mt-1 font-serif text-xl text-foreground">{memoriesCount}</p>
-                <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                <p className="mt-1 font-serif text-lg sm:text-xl text-foreground">{memoriesCount}</p>
+                <p className="truncate font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                   Memories
                 </p>
               </div>

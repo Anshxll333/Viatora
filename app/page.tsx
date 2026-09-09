@@ -65,22 +65,24 @@ export default async function CollectionPage() {
             <li key={state.slug}>
               <Link
                 href={`/state/${state.slug}`}
-                className="group flex flex-col rounded-2xl border border-border/70 border-l-[3px] border-l-accent/30 bg-card/70 p-5 shadow-[0_6px_20px_rgba(60,40,20,0.06)] transition-colors hover:border-accent/40 hover:border-l-accent/60"
+                className="group flex flex-col rounded-2xl border border-border/70 border-l-[3px] border-l-accent/30 bg-card/70 p-4 sm:p-5 shadow-[0_6px_20px_rgba(60,40,20,0.06)] transition-colors hover:border-accent/40 hover:border-l-accent/60"
               >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="min-w-0">
-                    <h2 className="font-serif text-3xl leading-none text-foreground">{state.name}</h2>
-                    <p className="mt-1.5 font-serif text-sm italic text-muted-foreground">
+                <div className="flex flex-row items-center justify-between gap-4 sm:gap-6">
+                  <div className="min-w-0 flex-1 py-2">
+                    <h2 className="font-serif text-2xl sm:text-3xl leading-tight text-foreground break-words hyphens-auto">
+                      {state.name}
+                    </h2>
+                    <p className="mt-2 font-serif text-xs sm:text-sm italic text-muted-foreground line-clamp-2 sm:line-clamp-none">
                       {state.description}
                     </p>
-                    <div className="mt-3 flex items-center gap-2">
+                    <div className="mt-4 flex items-center gap-2 pr-4">
                       <div className="h-px flex-1 bg-accent/20" />
                       <div className="h-1 w-1 rotate-45 bg-accent/30" />
                       <div className="h-px flex-1 bg-accent/20" />
                     </div>
                   </div>
                   {state.artwork ? (
-                    <div className="relative h-48 w-36 shrink-0 self-center overflow-hidden rounded-[3px] ring-1 ring-black/10 shadow-[0_8px_22px_rgba(60,40,20,0.16)]">
+                    <div className="relative h-32 w-20 sm:h-44 sm:w-32 shrink-0 self-center overflow-hidden rounded-[3px] ring-1 ring-black/10 shadow-[0_8px_22px_rgba(60,40,20,0.16)]">
                       <img
                         src={state.artwork}
                         alt={`${state.name} state artwork`}

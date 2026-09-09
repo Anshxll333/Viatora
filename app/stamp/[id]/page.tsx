@@ -31,12 +31,13 @@ export default async function StampDetailPage({
 
   // Load per-user collection and memory from DB.
   let memoryContent = ''
+  let memoryPhotos: { id: string; url: string }[] = []
   let userStamp = null
   if (user) {
     const [{ data: memory }, { data: stamp }] = await Promise.all([
       supabase
         .from('memories')
-        .select('content')
+        .select('id, content')
         .eq('user_id', user.id)
         .eq('destination_id', id)
         .maybeSingle(),
@@ -49,6 +50,17 @@ export default async function StampDetailPage({
     ])
     memoryContent = memory?.content ?? ''
     userStamp = stamp
+
+    if (memory?.id) {
+      const { data: photos } = await supabase
+        .from('memory_photos')
+        .select('id, photo_url')
+        .eq('memory_id', memory.id)
+      
+      if (photos) {
+        memoryPhotos = photos.map(p => ({ id: p.id, url: p.photo_url }))
+      }
+    }
   }
 
   const isCollected = user ? !!userStamp : false
@@ -113,6 +125,7 @@ export default async function StampDetailPage({
       <section className="mt-9 px-5">
         <MemoryEditor
           initial={memoryContent}
+          initialPhotos={memoryPhotos}
           isAuthenticated={!!user}
           destinationId={id}
         />

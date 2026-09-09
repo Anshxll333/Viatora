@@ -28,14 +28,9 @@ export const destinations: Destination[] = [
     stamp: '/stamps/Rajasthan/Jaipur.png',
     tint: 'oklch(0.62 0.15 30)',
     visited: false,
-    dateVisited: 'January 18, 2026',
-    visitedAt: '2026-01-18',
-    tripDays: 3,
     description:
       'The Pink City, known for Amber Fort, Hawa Mahal and royal heritage.',
     photos: [],
-    memory:
-      'Watching the sunrise over Amber Fort. The pink sandstone glowed warm in the morning desert breeze as temple bells rang in the distance.',
   },
   {
     id: 'udaipur',
@@ -113,14 +108,9 @@ export const destinations: Destination[] = [
     stamp: '/stamps/Uttarakhand/Rishikesh.png',
     tint: 'oklch(0.6 0.12 180)',
     visited: false,
-    dateVisited: 'October 12, 2025',
-    visitedAt: '2025-10-12',
-    tripDays: 4,
     description:
       'Spiritual river town, yoga, rafting and gateway to the Himalayas.',
     photos: [],
-    memory:
-      'Sitting by the Triveni Ghat as evening prayers echoed across the Ganges. The water reflected thousands of floating diyas while the mountain air turned crisp.',
   },
   {
     id: 'mussoorie',

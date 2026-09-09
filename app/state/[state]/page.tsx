@@ -78,7 +78,7 @@ export default async function StatePage({
       </section>
 
       <section className="px-5 pt-4">
-        <ul className="grid grid-cols-2 gap-x-5 gap-y-7">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-7">
           {stateDestinations.map((destination, i) => {
             const isCollected = user
               ? collectedIds.has(destination.id)

@@ -14,20 +14,36 @@ export default async function JournalPage() {
   if (user) {
     const { data: memories } = await supabase
       .from('memories')
-      .select('destination_id, content, visited_at, updated_at')
+      .select('id, destination_id, content, visited_at, updated_at')
       .eq('user_id', user.id)
       .order('updated_at', { ascending: false })
 
-    entries = (memories || []).flatMap((memory) => {
-      const destination = destinations.find((d) => d.id === memory.destination_id)
-      if (!destination) return []
-      return [{
-        ...destination,
-        visited: true,
-        memory: memory.content || '',
-        dateVisited: memory.visited_at || memory.updated_at,
-      }]
-    })
+    if (memories && memories.length > 0) {
+      const memoryIds = memories.map(m => m.id)
+      const { data: photos } = await supabase
+        .from('memory_photos')
+        .select('memory_id, photo_url')
+        .in('memory_id', memoryIds)
+
+      entries = memories.flatMap((memory) => {
+        const destination = destinations.find((d) => d.id === memory.destination_id)
+        if (!destination) return []
+        
+        const memoryPhotos = photos
+          ?.filter(p => p.memory_id === memory.id)
+          .map(p => p.photo_url) || []
+
+        return [{
+          ...destination,
+          visited: true,
+          memory: memory.content || '',
+          dateVisited: memory.visited_at || memory.updated_at,
+          photos: memoryPhotos,
+        }]
+      })
+    } else {
+      entries = []
+    }
   }
   return (
     <AppShell>
