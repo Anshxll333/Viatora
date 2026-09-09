@@ -186,11 +186,13 @@ export default async function PassportPage() {
 
         <div className="rounded-2xl border border-dashed border-border bg-card/40 p-5">
           <div className="grid grid-cols-4 gap-3">
-            {realVisitedDestinations.map((d, i) => (
-              <div key={d.id} className={i % 2 === 0 ? 'rotate-[-3deg]' : 'rotate-[3deg]'}>
-                <Stamp destination={d} showCaption={false} />
-              </div>
-            ))}
+            {displayDestinations
+              .filter((d) => d.visited)
+              .map((d, i) => (
+                <div key={d.id} className={i % 2 === 0 ? 'rotate-[-3deg]' : 'rotate-[3deg]'}>
+                  <Stamp destination={d} showCaption={false} />
+                </div>
+              ))}
           </div>
         </div>
       </section>

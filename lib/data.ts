@@ -29,7 +29,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.62 0.15 30)',
     visited: false,
     description:
-      'The Pink City, known for Amber Fort, Hawa Mahal and royal heritage.',
+      '🌸 Pink streets, royal arches & golden evenings.',
     photos: [],
   },
   {
@@ -42,7 +42,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.6 0.12 230)',
     visited: false,
     description:
-      'The City of Lakes, famous for Lake Pichola and its romantic palaces.',
+      '🕊️ Lakeside mornings, quiet palaces & sunset reflections.',
     photos: [],
   },
   {
@@ -55,7 +55,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.55 0.12 240)',
     visited: false,
     description:
-      'The Blue City, dominated by the magnificent Mehrangarh Fort.',
+      '💙 Blue lanes, ancient walls & desert skies.',
     photos: [],
   },
   {
@@ -68,7 +68,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.65 0.14 70)',
     visited: false,
     description:
-      'The Golden City rising from the Thar Desert, centered around its historic fort.',
+      '🏜️ Golden dunes, warm winds & nights under the stars.',
     photos: [],
   },
   {
@@ -81,7 +81,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.6 0.1 50)',
     visited: false,
     description:
-      'A spiritual desert town surrounding the sacred Pushkar Lake.',
+      '🌼 Temple bells, colourful streets & the energy of the mela.',
     photos: [],
   },
   {
@@ -94,7 +94,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.58 0.09 160)',
     visited: false,
     description:
-      'Rajasthan’s hill station, known for Nakki Lake, viewpoints and Dilwara Temples.',
+      '🌲 Cool mountain air, quiet roads & sunsets above the hills.',
     photos: [],
   },
 
@@ -109,7 +109,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.6 0.12 180)',
     visited: false,
     description:
-      'Spiritual river town, yoga, rafting and gateway to the Himalayas.',
+      '🌊 River mornings, mountain air & peaceful chaos.',
     photos: [],
   },
   {
@@ -122,7 +122,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.55 0.1 140)',
     visited: false,
     description:
-      'A Himalayan hill station known for mountain views and colonial charm.',
+      '⛰️ Misty roads, old cafés & clouds drifting through the hills.',
     photos: [],
   },
   {
@@ -135,7 +135,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.58 0.11 200)',
     visited: false,
     description:
-      'Sacred Ghat city where the Ganges descends to the plains.',
+      '🪔 River lights, temple bells & evenings by the Ganga.',
     photos: [],
   },
   {
@@ -148,7 +148,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.52 0.09 30)',
     visited: false,
     description:
-      'A dramatic Himalayan pilgrimage destination surrounded by towering mountains.',
+      '🏔️ Sacred mountains, cold air & a journey I\'ll never forget.',
     photos: [],
   },
   {
@@ -161,7 +161,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.62 0.13 60)',
     visited: false,
     description:
-      'A Himalayan ski destination with panoramic mountain views.',
+      '❄️ Snowy slopes, wide skies & mountains in every direction.',
     photos: [],
   },
   {
@@ -174,7 +174,7 @@ export const destinations: Destination[] = [
     tint: 'oklch(0.65 0.14 120)',
     visited: false,
     description:
-      'A Himalayan national park famous for alpine flowers and mountain trekking.',
+      '🌺 Endless colour, wildflowers & a valley that feels unreal.',
     photos: [],
   },
 ]

@@ -128,6 +128,10 @@ export default async function StampDetailPage({
           initialPhotos={memoryPhotos}
           isAuthenticated={!!user}
           destinationId={id}
+          destinationName={destination.city}
+          destinationCountry={destination.country}
+          stampUrl={destination.stamp}
+          visitedDate={visitedDate}
         />
       </section>
     </AppShell>

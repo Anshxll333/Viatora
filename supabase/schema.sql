@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS public.memory_photos (
 -- ==============================================================================
 -- INDEXES FOR PERFORMANCE
 -- ==============================================================================
+CREATE UNIQUE INDEX IF NOT EXISTS profiles_username_lower_idx ON public.profiles (LOWER(username));
 CREATE INDEX IF NOT EXISTS idx_user_stamps_user_id ON public.user_stamps(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_stamps_dest_id ON public.user_stamps(destination_id);
 CREATE INDEX IF NOT EXISTS idx_memories_user_id ON public.memories(user_id);
@@ -243,17 +244,44 @@ CREATE POLICY "Allow users to delete their memory photos"
 -- ==============================================================================
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  new_passport_number TEXT;
+  attempts INTEGER := 0;
+  success BOOLEAN := FALSE;
 BEGIN
-  INSERT INTO public.profiles (id, full_name, username, avatar_url, passport_number)
-  VALUES (
-    NEW.id,
-    COALESCE(NEW.raw_user_meta_data->>'full_name', SPLIT_PART(NEW.email, '@', 1)),
-    COALESCE(NEW.raw_user_meta_data->>'username', SPLIT_PART(NEW.email, '@', 1)),
-    NEW.raw_user_meta_data->>'avatar_url',
-    'VIA · ' || LPAD(nextval('public.passport_number_sequence')::TEXT, 4, '0') ||
-      ' · ' || EXTRACT(YEAR FROM NOW())::TEXT
-  )
-  ON CONFLICT (id) DO NOTHING;
+  -- Loop to handle potential passport_number collisions if the sequence is out of sync
+  WHILE NOT success AND attempts < 10 LOOP
+    BEGIN
+      new_passport_number := 'VIA · ' || LPAD(nextval('public.passport_number_sequence')::TEXT, 4, '0') || ' · ' || to_char(NOW(), 'YYYY');
+      
+      INSERT INTO public.profiles (id, full_name, username, avatar_url, passport_number)
+      VALUES (
+        NEW.id,
+        COALESCE(NEW.raw_user_meta_data->>'full_name', SPLIT_PART(NEW.email, '@', 1)),
+        COALESCE(NEW.raw_user_meta_data->>'username', SPLIT_PART(NEW.email, '@', 1)),
+        NEW.raw_user_meta_data->>'avatar_url',
+        new_passport_number
+      );
+      
+      success := TRUE;
+    EXCEPTION WHEN unique_violation THEN
+      -- If the conflict is on the primary key (id), profile already exists
+      IF EXISTS (SELECT 1 FROM public.profiles WHERE id = NEW.id) THEN
+        success := TRUE;
+      -- If the conflict is on the username, abort
+      ELSIF SQLERRM LIKE '%username%' THEN
+        RAISE EXCEPTION 'Username already taken';
+      -- Otherwise, it's likely a passport_number collision. Loop will retry.
+      ELSE
+        attempts := attempts + 1;
+      END IF;
+    END;
+  END LOOP;
+
+  IF NOT success THEN
+    RAISE EXCEPTION 'Failed to generate a unique passport number after % attempts', attempts;
+  END IF;
+
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
@@ -263,3 +291,22 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ==============================================================================
+-- SECURE USERNAME AVAILABILITY CHECK
+-- ==============================================================================
+-- This function allows checking if a username is taken without exposing profile data.
+-- It runs with SECURITY DEFINER to bypass RLS, but only returns a boolean.
+CREATE OR REPLACE FUNCTION public.check_username_available(requested_username text)
+RETURNS boolean AS $$
+DECLARE
+  is_available boolean;
+BEGIN
+  SELECT NOT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE LOWER(username) = LOWER(requested_username)
+  ) INTO is_available;
+  
+  RETURN is_available;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;

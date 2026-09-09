@@ -86,6 +86,7 @@ export default async function CollectionPage() {
                       <img
                         src={state.artwork}
                         alt={`${state.name} state artwork`}
+                        loading="lazy"
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -94,7 +95,7 @@ export default async function CollectionPage() {
                       {state.destinations.filter((d) => d.stamp).slice(0, 3).length > 0 ? (
                         state.destinations.filter((d) => d.stamp).slice(0, 3).map((d) => (
                           <div key={d.id} className="h-16 w-12 overflow-hidden rounded-[2px] ring-1 ring-black/10 shadow-sm grayscale-[0.7] opacity-70 transition-all duration-300 group-hover:grayscale-[0.4] group-hover:opacity-90">
-                            <img src={d.stamp} alt={d.city} className="h-full w-full object-cover" />
+                            <img src={d.stamp} alt={d.city} loading="lazy" className="h-full w-full object-cover" />
                           </div>
                         ))
                       ) : (

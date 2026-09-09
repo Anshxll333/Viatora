@@ -98,9 +98,10 @@ export default async function JournalPage() {
                       />
                     </div>
 
-                    <p className="mt-2.5 line-clamp-3 font-serif text-[14px] italic leading-relaxed text-foreground/80">
-                      {entry.memory}
-                    </p>
+                    <div
+                      className="mt-2.5 line-clamp-3 font-serif text-[14px] italic leading-relaxed text-foreground/80 [&_span]:!text-[14px]"
+                      dangerouslySetInnerHTML={{ __html: entry.memory || '' }}
+                    />
                   </div>
                 </div>
 

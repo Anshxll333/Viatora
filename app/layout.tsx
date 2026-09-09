@@ -1,6 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display, Geist } from 'next/font/google'
+import { Playfair_Display, Geist, Caveat } from 'next/font/google'
 import './globals.css'
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  variable: '--font-caveat',
+  display: 'swap',
+})
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -33,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${geist.variable} bg-background`}>
+    <html lang="en" className={`${playfair.variable} ${geist.variable} ${caveat.variable} bg-background`}>
       <body className="font-sans antialiased">
         {children}
       </body>

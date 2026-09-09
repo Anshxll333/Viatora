@@ -52,6 +52,19 @@ export async function signup(prevState: any, formData: FormData): Promise<{ erro
   const username = rawUsername.trim() || email.split('@')[0]
   const supabase = await createClient()
 
+  // Check username availability securely via RPC before attempting signup
+  const { data: isAvailable, error: rpcError } = await supabase.rpc('check_username_available', {
+    requested_username: username
+  })
+
+  if (rpcError) {
+    return { error: 'Failed to verify username availability. Please try again.' }
+  }
+
+  if (isAvailable === false) {
+    return { error: 'That traveler username is already taken. Please choose another.' }
+  }
+
   const origin = await getOrigin()
 
   const { data, error } = await supabase.auth.signUp({
@@ -67,8 +80,9 @@ export async function signup(prevState: any, formData: FormData): Promise<{ erro
   })
 
   if (error) {
-    if (error.message.includes('Database error saving new user') || error.message.includes('duplicate key value')) {
-      return { error: 'That traveler username is already taken. Please choose another.' }
+    // Return the actual error message instead of silently converting it
+    if (error.message.includes('Database error saving new user')) {
+      return { error: 'Signup failed due to a database configuration issue (e.g., passport sequence out of sync). Please check database logs.' }
     }
     return { error: error.message }
   }
@@ -79,7 +93,8 @@ export async function signup(prevState: any, formData: FormData): Promise<{ erro
   }
 
   // CASE B: no session (email confirmation required)
-  return { message: 'Check your email to verify your passport.' }
+  // If the user wants immediate login, they must disable "Confirm email" in Supabase Dashboard -> Authentication -> Providers -> Email
+  return { message: 'Check your email to verify your passport. (To disable this, turn off "Confirm email" in Supabase Dashboard)' }
 }
 
 export async function signout() {
