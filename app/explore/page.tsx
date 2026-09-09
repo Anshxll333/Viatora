@@ -39,7 +39,7 @@ export default async function ExplorePage() {
 
   const indiaDests = destinations.filter((d) => d.country === 'India').map(d => ({
     ...d,
-    visited: user ? userStamps.has(d.id) : d.visited
+    visited: user ? userStamps.has(d.id) : false
   }))
 
   // Group India destinations dynamically by state

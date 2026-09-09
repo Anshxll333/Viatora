@@ -3,10 +3,37 @@ import { MapPin } from 'lucide-react'
 import { AppShell } from '@/components/app-shell'
 import { BrandBar } from '@/components/brand-bar'
 import { indiaDestinations, indiaStates } from '@/lib/data'
+import { createClient } from '@/lib/supabase/server'
 
-export default function CollectionPage() {
-  const indiaCollected = indiaDestinations.filter((d) => d.visited).length
+export default async function CollectionPage() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  let collectedIds = new Set<string>()
+  if (user) {
+    const { data: stamps } = await supabase
+      .from('user_stamps')
+      .select('destination_id')
+      .eq('user_id', user.id)
+    collectedIds = new Set(stamps?.map((s) => s.destination_id) || [])
+  }
+
+  const indiaCollected = user
+    ? indiaDestinations.filter((d) => collectedIds.has(d.id)).length
+    : 0
   const indiaTotal = indiaDestinations.length
+
+  const displayStates = indiaStates.map((state) => {
+    const collectedCount = user
+      ? state.destinations.filter((d) => collectedIds.has(d.id)).length
+      : 0
+    return {
+      ...state,
+      collected: collectedCount,
+    }
+  })
 
   return (
     <AppShell>
@@ -34,7 +61,7 @@ export default function CollectionPage() {
 
       <section className="px-5 pt-4">
         <ul className="flex flex-col gap-4">
-          {indiaStates.map((state) => (
+          {displayStates.map((state) => (
             <li key={state.slug}>
               <Link
                 href={`/state/${state.slug}`}

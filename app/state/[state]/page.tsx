@@ -43,7 +43,7 @@ export default async function StatePage({
   const stateName = stateDestinations[0].state!
   const collected = user
     ? stateDestinations.filter((d) => collectedIds.has(d.id)).length
-    : stateDestinations.filter((d) => d.visited).length
+    : 0
   const total = stateDestinations.length
 
   return (
@@ -82,7 +82,7 @@ export default async function StatePage({
           {stateDestinations.map((destination, i) => {
             const isCollected = user
               ? collectedIds.has(destination.id)
-              : destination.visited
+              : false
             return (
             <li key={destination.id} className="flex flex-col">
               <Stamp destination={{ ...destination, visited: isCollected }} priority={i < 4} />

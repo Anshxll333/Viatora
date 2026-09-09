@@ -59,6 +59,29 @@ CREATE TABLE IF NOT EXISTS public.destinations (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Seed static destinations data
+INSERT INTO public.destinations (id, slug, city, country, country_code, description, stamp, tint)
+VALUES
+  ('jaipur', 'jaipur', 'Jaipur', 'India', 'IN', 'The Pink City, known for Amber Fort, Hawa Mahal and royal heritage.', '/stamps/Rajasthan/Jaipur.png', 'oklch(0.62 0.15 30)'),
+  ('udaipur', 'udaipur', 'Udaipur', 'India', 'IN', 'The City of Lakes, famous for Lake Pichola and its romantic palaces.', '/stamps/Rajasthan/Udaipur.png', 'oklch(0.6 0.12 230)'),
+  ('jodhpur', 'jodhpur', 'Jodhpur', 'India', 'IN', 'The Blue City, dominated by the magnificent Mehrangarh Fort.', '/stamps/Rajasthan/Jodhpur.png', 'oklch(0.55 0.12 240)'),
+  ('jaisalmer', 'jaisalmer', 'Jaisalmer', 'India', 'IN', 'The Golden City rising from the Thar Desert, centered around its historic fort.', '/stamps/Rajasthan/Jaisalmer.png', 'oklch(0.65 0.14 70)'),
+  ('pushkar', 'pushkar', 'Pushkar', 'India', 'IN', 'A spiritual desert town surrounding the sacred Pushkar Lake.', '/stamps/Rajasthan/Pushkar.png', 'oklch(0.6 0.1 50)'),
+  ('mount-abu', 'mount-abu', 'Mount Abu', 'India', 'IN', 'Rajasthan’s hill station, known for Nakki Lake, viewpoints and Dilwara Temples.', '/stamps/Rajasthan/MountAbu.png', 'oklch(0.58 0.09 160)'),
+  ('rishikesh', 'rishikesh', 'Rishikesh', 'India', 'IN', 'Spiritual river town, yoga, rafting and gateway to the Himalayas.', '/stamps/Uttarakhand/Rishikesh.png', 'oklch(0.6 0.12 180)'),
+  ('mussoorie', 'mussoorie', 'Mussoorie', 'India', 'IN', 'A Himalayan hill station known for mountain views and colonial charm.', '/stamps/Uttarakhand/Mussoorie.png', 'oklch(0.55 0.1 140)'),
+  ('haridwar', 'haridwar', 'Haridwar', 'India', 'IN', 'Sacred Ghat city where the Ganges descends to the plains.', '/stamps/Uttarakhand/Haridwar.png', 'oklch(0.58 0.11 200)'),
+  ('kedarnath', 'kedarnath', 'Kedarnath', 'India', 'IN', 'A dramatic Himalayan pilgrimage destination surrounded by towering mountains.', '/stamps/Uttarakhand/Kedarnath.png', 'oklch(0.52 0.09 30)'),
+  ('auli', 'auli', 'Auli', 'India', 'IN', 'A Himalayan ski destination with panoramic mountain views.', '/stamps/Uttarakhand/Auli.png', 'oklch(0.62 0.13 60)'),
+  ('valley-of-flowers', 'valley-of-flowers', 'Valley of Flowers', 'India', 'IN', 'A Himalayan national park famous for alpine flowers and mountain trekking.', '/stamps/Uttarakhand/Flowers.png', 'oklch(0.65 0.14 120)')
+ON CONFLICT (id) DO UPDATE SET
+  city = EXCLUDED.city,
+  country = EXCLUDED.country,
+  country_code = EXCLUDED.country_code,
+  description = EXCLUDED.description,
+  stamp = EXCLUDED.stamp,
+  tint = EXCLUDED.tint;
+
 -- 3. USER STAMPS TABLE
 CREATE TABLE IF NOT EXISTS public.user_stamps (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -112,6 +135,8 @@ ALTER TABLE public.memory_photos ENABLE ROW LEVEL SECURITY;
 
 -- Destinations: Read-only for authenticated and public users
 DROP POLICY IF EXISTS "Allow public read access on destinations" ON public.destinations;
+DROP POLICY IF EXISTS "Allow write access on destinations" ON public.destinations;
+DROP POLICY IF EXISTS "Allow update access on destinations" ON public.destinations;
 CREATE POLICY "Allow public read access on destinations"
   ON public.destinations FOR SELECT
   USING (true);
