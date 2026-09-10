@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { AppShell } from '@/components/app-shell'
@@ -108,12 +109,14 @@ export default async function StampDetailPage({
             {destination.photos.map((photo, i) => (
               <div
                 key={photo}
-                className="relative shrink-0 rotate-[-1deg] rounded-sm border-[6px] border-card bg-card p-0 shadow-[0_8px_22px_rgba(60,40,20,0.16)] odd:rotate-[1.5deg]"
+                className="relative h-56 w-44 shrink-0 rotate-[-1deg] rounded-sm border-[6px] border-card bg-card p-0 shadow-[0_8px_22px_rgba(60,40,20,0.16)] odd:rotate-[1.5deg]"
               >
-                <img
+                <Image
                   src={photo || '/placeholder.svg'}
                   alt={`${destination.city} trip photo ${i + 1}`}
-                  className="h-56 w-44 rounded-[1px] object-cover"
+                  fill
+                  sizes="176px"
+                  className="rounded-[1px] object-cover"
                 />
               </div>
             ))}

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { MapPin } from 'lucide-react'
 import { AppShell } from '@/components/app-shell'
 import { BrandBar } from '@/components/brand-bar'
@@ -83,19 +84,20 @@ export default async function CollectionPage() {
                   </div>
                   {state.artwork ? (
                     <div className="relative h-32 w-20 sm:h-44 sm:w-32 shrink-0 self-center overflow-hidden rounded-[3px] ring-1 ring-black/10 shadow-[0_8px_22px_rgba(60,40,20,0.16)]">
-                      <img
+                      <Image
                         src={state.artwork}
                         alt={`${state.name} state artwork`}
-                        loading="lazy"
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="(max-width: 640px) 80px, 128px"
+                        className="object-cover"
                       />
                     </div>
                   ) : (
                     <div className="flex shrink-0 gap-1.5 self-center">
                       {state.destinations.filter((d) => d.stamp).slice(0, 3).length > 0 ? (
                         state.destinations.filter((d) => d.stamp).slice(0, 3).map((d) => (
-                          <div key={d.id} className="h-16 w-12 overflow-hidden rounded-[2px] ring-1 ring-black/10 shadow-sm grayscale-[0.7] opacity-70 transition-all duration-300 group-hover:grayscale-[0.4] group-hover:opacity-90">
-                            <img src={d.stamp} alt={d.city} loading="lazy" className="h-full w-full object-cover" />
+                          <div key={d.id} className="relative h-16 w-12 overflow-hidden rounded-[2px] ring-1 ring-black/10 shadow-sm grayscale-[0.7] opacity-70 transition-all duration-300 group-hover:grayscale-[0.4] group-hover:opacity-90">
+                            <Image src={d.stamp} alt={d.city} fill sizes="48px" className="object-cover" />
                           </div>
                         ))
                       ) : (

@@ -29,24 +29,29 @@ export default async function PassportPage() {
   let userMemoriesCount = 0
 
   if (user) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-    profile = data
+    const [
+      { data: profileData },
+      { data: stamps },
+      { count: memoriesCount }
+    ] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single(),
+      supabase
+        .from('user_stamps')
+        .select('destination_id, visited_at')
+        .eq('user_id', user.id),
+      supabase
+        .from('memories')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+    ])
 
-    const { data: stamps } = await supabase
-      .from('user_stamps')
-      .select('destination_id, visited_at')
-      .eq('user_id', user.id)
+    profile = profileData
     userStamps = stamps || []
-
-    const { count } = await supabase
-      .from('memories')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id)
-    userMemoriesCount = count || 0
+    userMemoriesCount = memoriesCount || 0
   }
 
   const bearerName = profile?.username

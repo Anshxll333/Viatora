@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Destination } from '@/lib/data'
@@ -31,12 +32,14 @@ function StampFace({
         {/* Illustration */}
         <div className="relative aspect-[3/4] w-full overflow-hidden bg-secondary">
           {destination.stamp ? (
-            <img
+            <Image
               src={destination.stamp}
               alt={`Illustrated ${destination.city} stamp`}
-              loading={priority ? 'eager' : 'lazy'}
+              fill
+              priority={priority}
+              sizes={size === 'lg' ? "(max-width: 768px) 50vw, 33vw" : "(max-width: 768px) 50vw, 25vw"}
               className={cn(
-                'h-full w-full object-cover object-center',
+                'object-cover object-center',
                 !visited && 'grayscale-[0.9] opacity-55 contrast-[0.95]',
               )}
             />

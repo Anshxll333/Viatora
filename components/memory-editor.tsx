@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PenLine, Check, Lock, Camera, Trash2, Loader2, ImagePlus, Share, Bold, Italic, AlignLeft, AlignCenter, AlignRight, Type, Smile } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -445,12 +446,14 @@ export function MemoryEditor({
             {photos.map((photo, i) => (
               <div
                 key={photo.id}
-                className="group relative shrink-0 rounded-sm border-[5px] border-card bg-card p-0 shadow-[0_6px_18px_rgba(60,40,20,0.14)]"
+                className="group relative h-36 w-28 shrink-0 rounded-sm border-[5px] border-card bg-card p-0 shadow-[0_6px_18px_rgba(60,40,20,0.14)]"
               >
-                <img
+                <Image
                   src={photo.url}
                   alt={`Trip photo ${i + 1}`}
-                  className="h-36 w-28 rounded-[1px] object-cover"
+                  fill
+                  sizes="112px"
+                  className="rounded-[1px] object-cover"
                 />
                 <button
                   type="button"
